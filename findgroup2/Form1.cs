@@ -256,6 +256,9 @@ namespace findgroup2
                 }
 
             }
+
+
+
             Console.WriteLine("test test");
 
             
