@@ -257,6 +257,7 @@ namespace findgroup2
 
             }
             Console.WriteLine("test test");
+
             
           
             foreach (KeyValuePair<int[], patternData> pattern in filtered)//出力用
