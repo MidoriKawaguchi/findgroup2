@@ -45,7 +45,7 @@ namespace findgroup2
             float T = 1 / frequency;
             //windowsizeは適宜変える
             int windowsize = 100;
-            string[] dataInOneLine;
+            string[] dataInLines;
             string[] csvDataArray;
             int[][] label = new int[inputFiles.Length][];
             int[] csvDataLength = new int[inputFiles.Length];
@@ -66,17 +66,17 @@ namespace findgroup2
                 //Console.WriteLine("File Num: {0}", Path.GetFileNameWithoutExtension(inputFiles[j]).Substring(19, 3));
                 //fileName[j] = ((Path.GetFileNameWithoutExtension(inputFiles[j])[19] + Path.GetFileNameWithoutExtension(inputFiles[j])[20] + Path.GetFileNameWithoutExtension(inputFiles[j])[21]));
                 fileNumber[j] = int.Parse(Path.GetFileNameWithoutExtension(inputFiles[j]).Substring(19, 3));
-                dataInOneLine = null;
-                dataInOneLine = File.ReadAllLines(file);        //read all data as 1 line
-                label[j] = new int[dataInOneLine.Length / windowsize + 1];
-                timestamp[j] = new double[dataInOneLine.Length / windowsize + 1];       //for timestamp
-                csvDataLength[j] = dataInOneLine.Length;
+                dataInLines = null;
+                dataInLines = File.ReadAllLines(file);                                //read all data as lines
+                label[j] = new int[dataInLines.Length / windowsize + 1];              //dataInLines.Length : length of data
+                timestamp[j] = new double[dataInLines.Length / windowsize + 1];       //for timestamp
+                csvDataLength[j] = dataInLines.Length;
 
                 csvFileOutput = csvFileOutput + fileNumber[j];
 
-                for (int i = 1, k = 0; i < dataInOneLine.Length; i = i + windowsize, k++) //データ取得
+                for (int i = 1, k = 0; i < dataInLines.Length; i = i + windowsize, k++) //データ取得
                 {
-                    csvDataArray = dataInOneLine[i].Split(',');
+                    csvDataArray = dataInLines[i].Split(',');
 
                     //get label
                     label[j][k] = int.Parse(csvDataArray[5]);           //ラベル
@@ -94,6 +94,9 @@ namespace findgroup2
 
 
             Dictionary<int[], patternData> foundPattern = new Dictionary<int[], patternData>(new PatternEqual());
+            //
+            //Tkey: 
+            //Tvalue:
             Console.WriteLine("testt" + foundPattern.Count());
             int Exist = 1;
             int NotExist = 0;
