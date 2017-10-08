@@ -94,7 +94,6 @@ namespace findgroup2
 
 
             Dictionary<int[], patternData> foundPattern = new Dictionary<int[], patternData>(new PatternEqual());
-            //Dictionary<int[], patternData> foundPattern = new Dictionary<int[], patternData>(new PatternComp());
             Console.WriteLine("testt" + foundPattern.Count());
             int Exist = 1;
             int NotExist = 0;
@@ -106,7 +105,7 @@ namespace findgroup2
                 int[] curLabel = label[numberOfFile];                            //ファイル［numberOfFile］番目のラベル系列
                 int curFileNumber = fileNumber[numberOfFile];                    //ファイル番号
                 double[] curTimestamp = timestamp[numberOfFile];                 //for timestamp
-                for (int start = 0, end = 1; start < curLabel.Length;)  //ラベルのまとまりを比較していく start:見始め　end:見終わり
+                for (int start = 0, end = 1; start < curLabel.Length;)           //ラベルのまとまりを比較していく start:見始め　end:見終わり
                 {
                     
                     int[] labelStored = new int[end - start];                   //ラベルパターン格納用(labelStored)
@@ -213,10 +212,6 @@ namespace findgroup2
             }
 
             Console.WriteLine("classfiy finished");
-
-        
-            
-            //int filternumber = 0;   //重複するファイル用にフィルターをかける
 
             string csvFileOutput2 = "labelpattern,count \r\n";
            
