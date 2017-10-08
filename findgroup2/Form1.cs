@@ -14,7 +14,7 @@ namespace findgroup2
 {
     public partial class Form1 : Form
     {
-        string[] outputfiles;
+        string[] inputFiles;
         int NumberOfData = 108;
         public Form1()
         {
@@ -28,9 +28,9 @@ namespace findgroup2
             o.Filter = "CSV|*.csv";
             if (o.ShowDialog() == DialogResult.OK)
             {
-                outputfiles = o.FileNames;
-                MessageBox.Show("Select" + outputfiles.Length + "files");
-                //textBox2.Text = Path.GetDirectoryName(outputfiles[0]);
+                inputFiles = o.FileNames;
+                MessageBox.Show("Select" + inputFiles.Length + "files");
+                //textBox2.Text = Path.GetDirectoryName(inputFiles[0]);
             }
             else
             {
@@ -47,25 +47,25 @@ namespace findgroup2
             int windowsize = 100;
             string[] dataInOneLine;
             string[] csvDataArray;
-            int[][] label = new int[outputfiles.Length][];
-            int[] csvDataLength = new int[outputfiles.Length];
-            double[][] timestamp = new double[outputfiles.Length][]; // for pick up timestamp
+            int[][] label = new int[inputFiles.Length][];
+            int[] csvDataLength = new int[inputFiles.Length];
+            double[][] timestamp = new double[inputFiles.Length][]; // for pick up timestamp
 
-            int[] fileNumber = new int[outputfiles.Length];
+            int[] fileNumber = new int[inputFiles.Length];
             string csvFileOutput = "filenumber, label \r\n";
-            string newfile1 = Path.GetDirectoryName(outputfiles[0]) + "labeloutput_test.csv";
-            string newfile2 = Path.GetDirectoryName(outputfiles[0]) + "patternlabel_test.csv";
+            string newfile1 = Path.GetDirectoryName(inputFiles[0]) + "labeloutput_test.csv";
+            string newfile2 = Path.GetDirectoryName(inputFiles[0]) + "patternlabel_test.csv";
 
             //Dictionary<int, int[]> foundPattern = new Dictionary<int, int[]>();
 
 
 
-            for (int j = 0; j < outputfiles.Length; j++)//outputfiles.Lengths:number of chosen files 
+            for (int j = 0; j < inputFiles.Length; j++)//inputFiles.Lengths:number of chosen files 
             {
-                string file = outputfiles[j];           //file turn to 1 line csvDataArray
-                //Console.WriteLine("File Num: {0}", Path.GetFileNameWithoutExtension(outputfiles[j]).Substring(19, 3));
-                //fileName[j] = ((Path.GetFileNameWithoutExtension(outputfiles[j])[19] + Path.GetFileNameWithoutExtension(outputfiles[j])[20] + Path.GetFileNameWithoutExtension(outputfiles[j])[21]));
-                fileNumber[j] = int.Parse(Path.GetFileNameWithoutExtension(outputfiles[j]).Substring(19, 3));
+                string file = inputFiles[j];           //file turn to 1 line csvDataArray
+                //Console.WriteLine("File Num: {0}", Path.GetFileNameWithoutExtension(inputFiles[j]).Substring(19, 3));
+                //fileName[j] = ((Path.GetFileNameWithoutExtension(inputFiles[j])[19] + Path.GetFileNameWithoutExtension(inputFiles[j])[20] + Path.GetFileNameWithoutExtension(inputFiles[j])[21]));
+                fileNumber[j] = int.Parse(Path.GetFileNameWithoutExtension(inputFiles[j]).Substring(19, 3));
                 dataInOneLine = null;
                 dataInOneLine = File.ReadAllLines(file);        //read all data as 1 line
                 label[j] = new int[dataInOneLine.Length / windowsize + 1];
@@ -95,6 +95,7 @@ namespace findgroup2
 
             Dictionary<int[], patternData> foundPattern = new Dictionary<int[], patternData>(new PatternEqual());
             //Dictionary<int[], patternData> foundPattern = new Dictionary<int[], patternData>(new PatternComp());
+            Console.WriteLine("testt" + foundPattern.Count());
             int Exist = 1;
             int NotExist = 0;
 
