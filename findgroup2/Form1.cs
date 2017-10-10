@@ -108,37 +108,39 @@ namespace findgroup2
             {
                 int[] curLabel = label[numberOfFile];                            //ファイル［numberOfFile］番目のラベル系列
                 int curFileNumber = fileNumber[numberOfFile];                    //ファイル番号
-                double[] curTimestamp = timestamp[numberOfFile];                 //for timestamp
+                int[] curTimestampArrayNumber = new int[numberOfFile];                            //for timestamp kを格納するため
                 for (int start = 0, end = 1; start < curLabel.Length;)           //ラベルのまとまりを比較していく start:見始め　end:見終わり
                 {
                     
                     int[] labelStored = new int[end - start];                   //ラベルパターン格納用(labelStored)
-                    double[] timestampStored = new double[end - start];
+                    //double[] timestampStored = new double[end - start];
                     for (int i = 0 ,j = 0; i < (end - start); ++i)
                     {
                         if (curLabel[start + i] != -1)                  //-1はラベルに含めない　★追加項目
                         {
                             if (j == 0 || curLabel[start + i] != labelStored[j - 1])   //重なるラベルも統合
                             {
-                                labelStored[j] = curLabel[start + i];                    //ラベルパターン:ファイル［start + i]］番目のラベル系列
-                                timestampStored[j] = curTimestamp[start + i];
+                                labelStored[j] = curLabel[start + i];                    //ラベルパターン:ラベル［start + i]］番目のラベル系列
+                                //timestampStored[j] = curTimestampArrayNumber[start + i];            //timestamp:csvファイル[start + i]番目の時刻
                                 
+
                                 ++j;
                             }
                         }
-                        //Console.WriteLine("labelStored[" + i + "]:" + labelStored[i]);
+                        curTimestampArrayNumber[i] = start + i;                          //ここから次回
+                        Console.WriteLine("labelStored[" + i + "]:" + labelStored[i]);
                     }
-                    if (foundPattern.ContainsKey(labelStored))                  //ラベルパターンがDictionaryにあるとき
+                    if (foundPattern.ContainsKey(labelStored))                          //ラベルパターンがDictionaryにあるとき
                     {
                         end++;
-                        flagForExist = Exist;                                       //重複防止のためのflag ★追加項目
+                        flagForExist = Exist;                                            //重複防止のためのflag ★追加項目
                         Console.WriteLine("end++");
                     }
                     else
-                    {                                                   //これまでのラベルパターンがDictonaryにないとき  ながさを伸ばして比較
+                    {                                                                   　//これまでのラベルパターンがDictonaryにないとき  ながさを伸ばして比較
                         int labelCountOfPattern = 1;
                         var tmpFileNameList = new List<int>();
-                        var tmpTimestampList = new List<List<double>>();
+                        var tmpTimestampArrayNumber = new List<int>();
                         //if (flagForExsit == 1 && line > 1)                      //★追加 flagによりこれまでend++をしたか判断
                         //{
                         //    //Console.WriteLine("flagForExsit == 1");
@@ -154,34 +156,40 @@ namespace findgroup2
                         //else
                         //{
                         tmpFileNameList.Add(curFileNumber);
-                        
+                        //tmpTimestampArrayNumber.Add(curTimestampArrayNumber);           //timestamp[j][k]で時刻を参照できるよう、kに該当するものを格納
+
                         //}
 
-                      
+
 
                         for (int searchNumberOfFile = numberOfFile + 1; searchNumberOfFile < label.Length; ++searchNumberOfFile)
                         {                                                   //searchNumberOfFile:比較するlabelの番号
                             int[] cmpLabel = label[searchNumberOfFile];     //cmpLabel:比較するもの　ファイル［searchNumberOfFile］番目のラベル系列
-                            for (int cs = 0; cs < cmpLabel.Length;)         //cs: cs+position :比較されるもの　posをいじることで値変化
+                            for (int compStart = 0; compStart < cmpLabel.Length;)         //compStart:比較する側のラベル先頭位置　positionをいじることで値変化
                             {
                                 int position = 0;
-                                for (; position < labelStored.Length && cs + position < cmpLabel.Length && labelStored[position] == cmpLabel[cs + position]; ++position) { }
+                                for (; position < labelStored.Length && compStart + position < cmpLabel.Length && labelStored[position] == cmpLabel[compStart + position]; ++position) { }
                                 //position(位置)はラベルパターンの長さ以下
                                 //比較対象の長さ以下
                                 //比較対象とラベルパターンが一緒
                                 //上記の条件が揃うとき、位置を移動(左に1つ)
-                                //Console.WriteLine("labelpattern" + labelStored[position] + " \t" + cmpLabel[cs + position]);
+                                //Console.WriteLine("labelpattern" + labelStored[position] + " \t" + cmpLabel[compStart + position]);
 
-                                if (position == labelStored.Length)                 //長さが一緒なら一致
+                                if (position == labelStored.Length)        //長さが一緒なら一致
                                 {
                                     labelCountOfPattern++;
                                     tmpFileNameList.Add(fileNumber[searchNumberOfFile]);
-                                    //cs += position;
+
+                                    tmpTimestampArrayNumber.Add(position);   //timestampを参照するため、なんもじめか（前の方のtimestamp配列のｋにあたる）を格納
+
+                                    Console.WriteLine("positon:" + tmpTimestampArrayNumber);
+
+                                    //compStart += position;
                                     break;
                                 }
                                 else
                                 {
-                                    cs++;
+                                    compStart++;
                                     flagForExist = NotExist; //★　追加
                                 }
                             }
@@ -193,7 +201,8 @@ namespace findgroup2
                             {
                                 countOfPattern = labelCountOfPattern,
                                 fileNumberOfPattern = tmpFileNameList,
-                                timestampOfPattern = tmpTimestampList
+                                //timestampOfPattern = tmpTimestampArrayNumber         //timestamp[j][k]で時刻を参照できるよう、kに該当するものを格納 CompStart用
+
                             };
                             end++;
                             flagForExist = NotExist;                                       //重複防止のためのflag ★追加項目
