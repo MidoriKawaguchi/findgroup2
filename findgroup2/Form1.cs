@@ -138,7 +138,7 @@ namespace findgroup2
                     {                                                   //これまでのラベルパターンがDictonaryにないとき  ながさを伸ばして比較
                         int labelCountOfPattern = 1;
                         var tmpFileNameList = new List<int>();
-                        //var tmpTimestampList = new List<double>();
+                        var tmpTimestampList = new List<List<double>>();
                         //if (flagForExsit == 1 && line > 1)                      //★追加 flagによりこれまでend++をしたか判断
                         //{
                         //    //Console.WriteLine("flagForExsit == 1");
@@ -188,10 +188,12 @@ namespace findgroup2
                         }
                         if (labelCountOfPattern > 1 && flagForExist == Exist)         //&& flagForExsit != 1 ★追加項目　重複防止
                         {
+                            //patternDataの中身に代入
                             foundPattern[labelStored] = new patternData 
                             {
                                 countOfPattern = labelCountOfPattern,
-                                fileNumberOfPattern = tmpFileNameList
+                                fileNumberOfPattern = tmpFileNameList,
+                                timestampOfPattern = tmpTimestampList
                             };
                             end++;
                             flagForExist = NotExist;                                       //重複防止のためのflag ★追加項目
@@ -271,7 +273,7 @@ namespace findgroup2
                    
                 }
                 csvFileOutput2 += "," + pattern.Value.countOfPattern + "," + string.Join(" ", pattern.Value.fileNumberOfPattern.Select(v => v.ToString())) + "\r\n";
-                //+ "," + pattern.Value.timestampOfPattern +"\r\n";
+                csvFileOutput2 += "," + pattern.Value.timestampOfPattern +"\r\n";
             }
             csvFileOutput2 += "\r\n";
             Console.WriteLine("test test2");
@@ -368,7 +370,7 @@ namespace findgroup2
     {
         public int countOfPattern;
         public List<int> fileNumberOfPattern;
-        //public List<double> timestampOfPattern;      //Add timestamp
+        public List<List<double>> timestampOfPattern;      //Add timestamp
     };
 
 
