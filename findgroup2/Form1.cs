@@ -59,10 +59,11 @@ namespace findgroup2
             //Dictionary<int, int[]> foundPattern = new Dictionary<int, int[]>();
 
 
-
-            for (int j = 0; j < inputFiles.Length; j++)//inputFiles.Lengths:number of chosen files 
+            //inputFiles.Lengths:number of chosen files 
+            for (int j = 0; j < inputFiles.Length; j++)
             {
-                string file = inputFiles[j];           //file turn to 1 line csvDataArray
+                string file = inputFiles[j];           
+                //file turn to 1 line csvDataArray
                 //Console.WriteLine("File Num: {0}", Path.GetFileNameWithoutExtension(inputFiles[j]).Substring(19, 3));
                 //fileName[j] = ((Path.GetFileNameWithoutExtension(inputFiles[j])[19] + Path.GetFileNameWithoutExtension(inputFiles[j])[20] + Path.GetFileNameWithoutExtension(inputFiles[j])[21]));
                 fileNumber[j] = int.Parse(Path.GetFileNameWithoutExtension(inputFiles[j]).Substring(19, 3));
@@ -94,10 +95,10 @@ namespace findgroup2
 
 
             Dictionary<int[], patternData> foundPattern = new Dictionary<int[], patternData>(new PatternEqual());
-            //
-            //Tkey: 
-            //Tvalue:
-            Console.WriteLine("testt" + foundPattern.Count());
+            //Tkey: label
+            //Tvalue:filenumber
+            //foundPatternは後に代入している、いまはからっぽ
+            //timestampを保持させるには、filenumberと何文字目のラベルかという情報を構造体にする
             int Exist = 1;
             int NotExist = 0;
 
