@@ -108,7 +108,7 @@ namespace findgroup2
             {
                 int[] curLabel = label[numberOfFile];                            //ファイル［numberOfFile］番目のラベル系列
                 int curFileNumber = fileNumber[numberOfFile];                    //ファイル番号
-                int[] curTimestampArrayNumber = new int[numberOfFile];                            //for timestamp kを格納するため
+                int[] curTimestampArrayNumber = new int[label.Length];           //timestampが何番目にあるか（k）を格納するため
                 for (int start = 0, end = 1; start < curLabel.Length;)           //ラベルのまとまりを比較していく start:見始め　end:見終わり
                 {
                     
@@ -127,7 +127,7 @@ namespace findgroup2
                                 ++j;
                             }
                         }
-                        curTimestampArrayNumber[i] = start + i;                          //ここから次回
+                        curTimestampArrayNumber[i] = (start + i)*windowsize;                          //ここから次回
                         Console.WriteLine("labelStored[" + i + "]:" + labelStored[i]);
                     }
                     if (foundPattern.ContainsKey(labelStored))                          //ラベルパターンがDictionaryにあるとき
